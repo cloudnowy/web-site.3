@@ -4,26 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приложение для массового тестирования</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Базовые стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #808080;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            width: 85%;
+            border-radius: 24px;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        main {
+            padding: 45px;
+            width: 29%;
+            max-width: 600px;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 24px;
+        }
+
+        h1 {
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #808080;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            margin: 5px 0;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        /* Базовые стили */
+    </style>
 </head>
 <body>
     <header>
-        <h1>Добро пожаловать в приложение для массового тестирования</h1>
+        <h1>Добро пожаловать!</h1>
     </header>
     <main>
         <section class="login">
             <h2>Вход</h2>
             <button id="login-yandex">Войти через Yandex ID</button>
             <button id="login-github">Войти через GitHub</button>
-            <form id="code-login">
-                <label for="access-code">Введите код доступа:</label>
-                <input type="text" id="access-code" name="access-code" required>
-                <button type="submit">Войти</button>
+            <button id="login-github">Войти через код доступа</button>
             </form>
         </section>
     </main>
     <script src="app.js"></script>
 </body>
 </html>
-
 
