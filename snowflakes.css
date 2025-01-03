@@ -5,17 +5,39 @@
     font-size: 24px;
     color: white;
     pointer-events: none;
-    animation: fall 10s linear infinite; /* Анимация падения */
+    animation: fall 15s linear infinite; /* Анимация для снежинок с движением по диагонали */
 }
 
-/* Анимация снежинок */
+/* Стили для вертикальных снежинок */
+.snowflake-vertical {
+    position: fixed;
+    top: -10px; /* Начальная позиция */
+    font-size: 24px;
+    color: white;
+    pointer-events: none;
+    animation: fall-vertical 10s linear infinite; /* Анимация для вертикальных снежинок */
+}
+
+/* Анимация для падения снежинок по диагонали */
 @keyframes fall {
     0% {
-        transform: translateY(-10px) rotate(0deg);
+        transform: translateY(-10px) translateX(-100vw) rotate(0deg); /* Начало с левой стороны */
         opacity: 1;
     }
     100% {
-        transform: translateY(110vh) rotate(360deg);
+        transform: translateY(110vh) translateX(100vw) rotate(360deg); /* Конец, снежинка проходит через весь экран */
+        opacity: 0.5;
+    }
+}
+
+/* Анимация для вертикальных снежинок */
+@keyframes fall-vertical {
+    0% {
+        transform: translateY(-10px) rotate(0deg); /* Начало сверху */
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg); /* Конец, снежинка падает прямо вниз */
         opacity: 0.5;
     }
 }
