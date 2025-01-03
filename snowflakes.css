@@ -1,0 +1,21 @@
+/* Стили для снежинок */
+.snowflake {
+    position: fixed;
+    top: -10px; /* Начальная позиция над экраном */
+    font-size: 24px;
+    color: white;
+    pointer-events: none;
+    animation: fall 10s linear infinite; /* Анимация падения */
+}
+
+/* Анимация снежинок */
+@keyframes fall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.5;
+    }
+}
