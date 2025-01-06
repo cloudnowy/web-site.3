@@ -18,6 +18,17 @@
             min-height: 88vh;
             background-color: #151515;
             color: black; 
+            overflow: hidden;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
 
         header {
@@ -71,6 +82,9 @@
     </style>
 </head>
 <body>
+    <video autoplay loop muted>
+        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
+        </video> 
     <header>
         <h1>Сайт для проведения тестирования</h1>
     </header>
