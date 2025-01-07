@@ -79,15 +79,16 @@
 </head>
 <body>
     <header>
-        <h1>Тестирование</h1>
+        <h1 id="question-number">Тест 1</h1>
     </header>
     <main>
-        <div id="question-container">
-            <div class="question" id="question">Загрузка...</div>
-            <div class="answers" id="answers"></div>
-        </div>
+        <section class="test">
+            <div class="question" id="question-text"></div>
+            <div class="answers" id="answers-container"></div>
+        </section>
     </main>
-    <script src="test1.js"></script> <!-- Подключение внешнего файла -->
+    <script src="questions.js"></script>
+    <script src="test.js"></script>
     <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
 </body>
 </html>

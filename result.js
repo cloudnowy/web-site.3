@@ -1,28 +1,24 @@
-// Заглушка для правильных ответов
-const correctAnswers = {
-    1: "Python",
-    2: "CSS",
-    3: "JavaScript"
-};
+// Получаем результаты и вопросы из localStorage
+const results = JSON.parse(localStorage.getItem('testResults')) || [];
+const questions = JSON.parse(localStorage.getItem('questions')) || [];
 
-// Получаем ответы пользователя из localStorage
-const userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || {};
+const resultsContainer = document.querySelector('.results');
+// Проверяем, есть ли данные
+if (results.length > 0 && questions.length > 0) {
+    resultsContainer.innerHTML = ''; // Очищаем сообщение "Загрузка результатов..."
 
-// Подсчитываем количество правильных ответов
-let correctCount = 0;
-Object.keys(correctAnswers).forEach(questionId => {
-    if (userAnswers[questionId] === correctAnswers[questionId]) {
-        correctCount++;
-    }
-});
+    results.forEach((result, index) => {
+        const question = questions[result.questionIndex];
+        const isCorrect = result.isCorrect ? 'Правильно' : 'Неправильно';
 
-// Отображаем результаты на странице
-document.addEventListener("DOMContentLoaded", () => {
-    const main = document.querySelector("main");
-    main.innerHTML = `
-        <h2>Ваш результат:</h2>
-        <p>Правильных ответов: ${correctCount} из ${Object.keys(correctAnswers).length}</p>
-        <button onclick="window.location.href='main.html'">Вернуться на главную</button>
-    `;
-});
-
+        const resultElement = document.createElement('div');
+        resultElement.innerHTML = `
+            <p><strong>Вопрос ${index + 1}:</strong> ${question.text}</p>
+            <p><strong>Ваш ответ:</strong> ${question.answers[result.selectedAnswer]}</p>
+            <p><strong>Результат:</strong> ${isCorrect}</p>
+        `;
+        resultsContainer.appendChild(resultElement);
+    });
+} else {
+    resultsContainer.textContent = 'Результаты отсутствуют.';
+}
