@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результаты теста</title>
+    <title>Тест</title>
     <link rel="stylesheet" href="snowflakes.css">  <!-- Подключаем стили для снежинок -->
     <style>
-       body {
+        /* Базовые стили */
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -29,6 +30,17 @@
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
         }
 
+        main {
+            padding: 40px;
+            width: 29%;
+            max-width: 600px;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+            background: gainsboro;
+            border-radius: 24px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
         video {
             position: fixed;
             top: 0;
@@ -40,54 +52,57 @@
         }
 
 
-        main {
-            padding: 46px;
-            width: 32%;
-            max-width: 600px;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-            background: gainsboro;
-            border-radius: 24px;
-            margin-top: 30px;
-        }
-
         h1 {
             font-size: 38px;
             margin-bottom: 20px;
         }
 
-        p {
-            font-size: 18px;
+        .question {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
         }
 
         button {
             background-color: #454545;
             color: white;
             border: none;
-            padding: 14px 40px;
-            margin: 5px 0;
+            padding: 10px 20px;
             border-radius: 16px;
             cursor: pointer;
-            font-size: 20px;
-            text-align: center;
+            font-size: 18px;
+            text-align: left;
             width: 100%;
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+            margin: 0px 0
         }
+
         button:hover {
             background-color: #808080;
         }
-        
     </style>
-   <script defer src="result.js"></script>
 </head>
 <body>
     <video autoplay loop muted>
         <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
         </video> 
     <header>
-        <h1>Результаты теста</h1>
+        <h1 id="question-number">Тест 1</h1>
     </header>
     <main>
-        <button id="perehod" onclick="window.location.href='main.html'">Вернуться на главную страницу</button>
+        <section class="test">
+            <div class="question" id="question-text"></div>
+            <div class="answers" id="answers-container"></div>
+        </section>
     </main>
+    <script src="question1.js"></script>
+    <script src="test.js"></script>
+    <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
 </body>
 </html>

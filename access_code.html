@@ -29,6 +29,17 @@
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
         }
 
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+
         main {
             padding: 30px;
             width: 30%;
@@ -77,6 +88,9 @@
     </style>
 </head>
 <body>
+    <video autoplay loop muted>
+        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
+        </video> 
     <header>
         <h1>Добро пожаловать!</h1>
     </header>

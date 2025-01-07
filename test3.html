@@ -41,6 +41,17 @@
             text-align: center;
         }
 
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+
         h1 {
             font-size: 38px;
             margin-bottom: 20px;
@@ -78,20 +89,20 @@
     </style>
 </head>
 <body>
+    <video autoplay loop muted>
+        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
+        </video> 
     <header>
-        <h1>Вопрос 1</h1>
+        <h1 id="question-number">Тест 3</h1>
     </header>
     <main>
         <section class="test">
-            <div class="question">Какой язык программирования вы предпочитаете?</div>
-            <div class="answers">
-                <button>Python</button>
-                <button>JavaScript</button>
-                <button>Java</button>
-                <button>C++</button>
-            </div>
+            <div class="question" id="question-text"></div>
+            <div class="answers" id="answers-container"></div>
         </section>
     </main>
+    <script src="question3.js"></script>
+    <script src="test.js"></script>
     <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
 </body>
 </html>
