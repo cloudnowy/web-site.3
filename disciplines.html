@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="snowflakes.css">  <!-- Подключаем стили для снежинок -->
+    <style>
+        /* Базовые стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 88vh;
+            background-color: #151515;
+            color: black;
+        }
+
+        header {
+            background-color: gainsboro;
+            color: black;
+            padding: 20px;
+            text-align: center;
+            width: 85%;
+            border-radius: 24px;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+
+        main {
+            padding: 28px;
+            width: 33%;
+            max-width: 800px;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+            background: gainsboro;
+            border-radius: 24px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .test-list {
+            margin-top: 20px;
+        }
+
+        .test-item {
+            background-color: #454545;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            margin: 5px 0;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 20px;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-item:hover {
+            background-color: #808080;
+        }
+    </style>
+</head>
+<body>
+    
+    <video autoplay loop muted>
+        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
+        </video> 
+    <header>
+        <h1>Дисциплины</h1>
+    </header>
+    <main>
+        <section class="test-selection">
+            <h2>Выберите дисциплину</h2>
+            <div class="test-list">
+                <button class="test-item" onclick="window.location.href='tests.html'">Диспицплина 1</button>
+                <button class="test-item" onclick="window.location.href='#'">Диспицплина 2</button>
+                <button class="test-item" onclick="window.location.href='#'">Диспицплина 3</button>
+            </div>
+        </section>
+    <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
+</body>
+</html>
