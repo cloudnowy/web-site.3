@@ -43,6 +43,22 @@ function createDiscipline() {
         .catch(error => console.error('Error:', error));
 }
 
+function deleteTest() {
+    const testId = document.getElementById('delete-test-id').value;
+
+    fetch(`${API_BASE}/tests/${testId}`, { method: 'DELETE' })
+        .then(response => response.ok ? alert('Тест удалён') : alert('Ошибка удаления теста'))
+        .catch(console.error);
+}
+
+function deleteDiscipline() {
+    const disciplineId = document.getElementById('delete-discipline-id').value;
+
+    fetch(`${API_BASE}/disciplines/${disciplineId}`, { method: 'DELETE' })
+        .then(response => response.ok ? alert('Дисциплина удалена') : alert('Ошибка удаления дисциплины'))
+        .catch(console.error);
+}
+
 function fetchDisciplines() {
     fetch(`${API_BASE}/disciplines`)
         .then(response => {
