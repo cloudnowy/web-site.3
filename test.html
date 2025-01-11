@@ -73,17 +73,32 @@
         button:hover {
             background-color: #808080;
         }
+
+        #next-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #next-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1 id="test-title">Вопросы</h1>
+        <h1 id="test-title">Тест</h1>
     </header>
     <main>
         <section>
-            <div class="question" id="question-container">
-                <!-- Вопросы и ответы -->
-            </div>
+            <div class="question" id="question-container"></div>
+            <div class="answers" id="answers-container"></div>
+            <button id="next-button" style="display: none;">Следующий вопрос</button>
         </section>
     </main>
     <script>
@@ -92,6 +107,10 @@
         // Получение параметров URL
         const urlParams = new URLSearchParams(window.location.search);
         const testId = urlParams.get('test_id');
+
+        let questions = []; // Список вопросов
+        let currentQuestionIndex = 0; // Индекс текущего вопроса
+        let correctAnswers = 0; // Количество правильных ответов
 
         // Загрузка вопросов
         function fetchQuestions() {
@@ -103,36 +122,84 @@
                     return response.json();
                 })
                 .then(data => {
-                    const container = document.getElementById('question-container');
-                    container.innerHTML = ''; // Очистка контейнера
-
                     if (Array.isArray(data.questions)) {
-                        data.questions.forEach(question => {
-                            const questionElement = document.createElement('div');
-                            questionElement.className = 'question';
-                            questionElement.textContent = question.content;
-
-                            const answersContainer = document.createElement('div');
-                            answersContainer.className = 'answers';
-
-                            question.answers.forEach(answer => {
-                                const button = document.createElement('button');
-                                button.textContent = answer.content;
-                                button.onclick = () => {
-                                    alert(answer.is_correct ? 'Правильно!' : 'Неправильно!');
-                                };
-                                answersContainer.appendChild(button);
-                            });
-
-                            container.appendChild(questionElement);
-                            container.appendChild(answersContainer);
-                        });
+                        questions = data.questions;
+                        showQuestion();
                     } else {
                         console.error('Неожиданная структура данных:', data);
                     }
                 })
                 .catch(error => console.error('Ошибка:', error));
         }
+
+        // Показать текущий вопрос
+        function showQuestion() {
+            const questionContainer = document.getElementById('question-container');
+            const answersContainer = document.getElementById('answers-container');
+            const nextButton = document.getElementById('next-button');
+
+            // Очистка контейнеров
+            questionContainer.innerHTML = '';
+            answersContainer.innerHTML = '';
+
+            // Если вопросов больше нет, завершить тест
+            if (currentQuestionIndex >= questions.length) {
+                completeTest();
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            questionContainer.textContent = question.content;
+
+            question.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.textContent = answer.content;
+                button.onclick = () => {
+                    if (answer.is_correct) {
+                        correctAnswers++;
+                    }
+                    nextButton.style.display = 'block'; // Показать кнопку "Следующий вопрос"
+                };
+                answersContainer.appendChild(button);
+            });
+        }
+
+        // Завершение теста
+        function completeTest() {
+            const username = prompt('Введите ваше имя для сохранения результата:');
+            if (!username) {
+                alert('Имя не может быть пустым. Результат не сохранён.');
+                return;
+            }
+
+            fetch(`${API_BASE}/results`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    test_id: testId,
+                    username: username,
+                    score: correctAnswers
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Тест завершён! Ваш результат: ${correctAnswers} правильных ответов.`);
+                        window.location.href = 'tests.html?discipline_id=1'; // Вернуться к списку тестов
+                    } else {
+                        alert('Не удалось сохранить результат.');
+                    }
+                })
+                .catch(error => console.error('Ошибка:', error));
+        }
+
+        // Обработчик для кнопки "Следующий вопрос"
+        document.getElementById('next-button').onclick = () => {
+            currentQuestionIndex++;
+            document.getElementById('next-button').style.display = 'none'; // Скрыть кнопку
+            showQuestion();
+        };
 
         // Вызов функции при загрузке страницы
         document.addEventListener('DOMContentLoaded', fetchQuestions);
