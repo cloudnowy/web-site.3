@@ -40,7 +40,6 @@
             z-index: -1;
         }
 
-
         main {
             padding: 28px;
             width: 33%;
@@ -88,20 +87,55 @@
 <body>
     
     <video autoplay loop muted>
-        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
-        </video> 
+        <source src="Chainsaw Man - 10.mp4" type="video/mp4">
+    </video> 
     <header>
         <h1>Дисциплины</h1>
     </header>
     <main>
         <section class="test-selection">
             <h2>Выберите дисциплину</h2>
-            <div class="test-list">
-                <button class="test-item" onclick="window.location.href='tests.html'">Диспицплина 1</button>
-                <button class="test-item" onclick="window.location.href='#'">Диспицплина 2</button>
-                <button class="test-item" onclick="window.location.href='#'">Диспицплина 3</button>
+            <div id="discipline-list" class="test-list">
+                <!-- Здесь будут динамически добавлены кнопки -->
             </div>
         </section>
+    </main>
+    <script>
+        const API_BASE = 'https://testback-production-a036.up.railway.app';
+
+        // Функция для получения дисциплин
+        function fetchDisciplines() {
+            fetch(`${API_BASE}/disciplines`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Не удалось загрузить дисциплины');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const list = document.getElementById('discipline-list');
+                    list.innerHTML = ''; // Очистка списка
+
+                    if (Array.isArray(data.disciplines)) {
+                        data.disciplines.forEach(discipline => {
+                            const button = document.createElement('button');
+                            button.className = 'test-item';
+                            button.textContent = `${discipline.title}`;
+                            button.onclick = () => {
+                                window.location.href = `tests.html?discipline_id=${discipline.id}`;
+                            };
+                            list.appendChild(button);
+                        });
+                    } else {
+                        console.error('Неожиданная структура данных:', data);
+                    }
+                })
+                .catch(error => console.error('Ошибка:', error));
+        }
+
+        // Вызов функции для получения дисциплин при загрузке страницы
+        document.addEventListener('DOMContentLoaded', fetchDisciplines);
+    </script>
     <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
 </body>
 </html>
