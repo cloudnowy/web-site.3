@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тесты</title>
+    <title>Вопросы</title>
     <style>
         /* Базовые стили */
         body {
@@ -45,39 +45,44 @@
             margin-bottom: 20px;
         }
 
-        .test-list {
+        .question {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .answers {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             gap: 10px;
         }
 
-        .test-item {
+        button {
             background-color: #454545;
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 10px 20px;
             border-radius: 16px;
             cursor: pointer;
             font-size: 18px;
-            text-align: center;
+            text-align: left;
             width: 100%;
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .test-item:hover {
+        button:hover {
             background-color: #808080;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Тесты</h1>
+        <h1 id="test-title">Вопросы</h1>
     </header>
     <main>
         <section>
-            <h2>Выберите тест</h2>
-            <div id="test-list" class="test-list">
-                <!-- Динамически загружаемые тесты -->
+            <div class="question" id="question-container">
+                <!-- Вопросы и ответы -->
             </div>
         </section>
     </main>
@@ -86,30 +91,41 @@
 
         // Получение параметров URL
         const urlParams = new URLSearchParams(window.location.search);
-        const disciplineId = urlParams.get('discipline_id');
+        const testId = urlParams.get('test_id');
 
-        // Функция для загрузки тестов
-        function fetchTests() {
-            fetch(`${API_BASE}/tests/${disciplineId}`)
+        // Загрузка вопросов
+        function fetchQuestions() {
+            fetch(`${API_BASE}/questions/${testId}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Не удалось загрузить тесты');
+                        throw new Error('Не удалось загрузить вопросы');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    const list = document.getElementById('test-list');
-                    list.innerHTML = ''; // Очистка списка
+                    const container = document.getElementById('question-container');
+                    container.innerHTML = ''; // Очистка контейнера
 
-                    if (Array.isArray(data.tests)) {
-                        data.tests.forEach(test => {
-                            const button = document.createElement('button');
-                            button.className = 'test-item';
-                            button.textContent = test.title;
-                            button.onclick = () => {
-                                window.location.href = `test.html?test_id=${test.id}`;
-                            };
-                            list.appendChild(button);
+                    if (Array.isArray(data.questions)) {
+                        data.questions.forEach(question => {
+                            const questionElement = document.createElement('div');
+                            questionElement.className = 'question';
+                            questionElement.textContent = question.content;
+
+                            const answersContainer = document.createElement('div');
+                            answersContainer.className = 'answers';
+
+                            question.answers.forEach(answer => {
+                                const button = document.createElement('button');
+                                button.textContent = answer.content;
+                                button.onclick = () => {
+                                    alert(answer.is_correct ? 'Правильно!' : 'Неправильно!');
+                                };
+                                answersContainer.appendChild(button);
+                            });
+
+                            container.appendChild(questionElement);
+                            container.appendChild(answersContainer);
                         });
                     } else {
                         console.error('Неожиданная структура данных:', data);
@@ -118,8 +134,8 @@
                 .catch(error => console.error('Ошибка:', error));
         }
 
-        // Вызов функции для загрузки тестов при загрузке страницы
-        document.addEventListener('DOMContentLoaded', fetchTests);
+        // Вызов функции при загрузке страницы
+        document.addEventListener('DOMContentLoaded', fetchQuestions);
     </script>
 </body>
 </html>
