@@ -79,18 +79,33 @@
         button:hover {
             background-color: #808080;
         }
+		input[type="text"], input[type="password"] {
+        width: 95%; /* Увеличиваем ширину поля */
+        padding: 20px; /* Увеличиваем отступы внутри поля */
+        margin: 15px 0; /* Добавляем больше пространства между полями */
+        border: 2px solid #ccc; /* Более заметная граница */
+        border-radius: 16px; /* Закругляем углы */
+        font-size: 22px; /* Увеличиваем размер текста */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Добавляем тень */
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+        border-color: #007BFF; /* Меняем цвет границы при фокусе */
+        outline: none; /* Убираем стандартное выделение */
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Добавляем подсветку при фокусе */
+    }
         /* Базовые стили */
     </style>
 </head>
 <body>
     <video autoplay loop muted>
-        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
-        </video> 
+        <source src="Chainsaw Man - 10.mp4" type="video/mp4">
+    </video>
     <header>
         <h1>Сайт для проведения тестирования</h1>
     </header>
     <main>
-        <section class="login">
+	<section class="login">
             <h2>Вход</h2>
             <a href = "https://your-api-endpoint.com/auth/yandex" tagret = "_blank">
             <button id="login-yandex">Войти через Yandex ID</button>
@@ -98,10 +113,30 @@
             <a href = "https://your-api-endpoint.com/auth/github" tagret = "_blank"> 
             <button id="login-github">Войти через GitHub</button>
         </a>
-            <button id="login-code" onclick="window.location.href='vhod-reg.html'">Продолжить через логин/пароль</button>
+       
+            <h2>Вход</h2>
+           <input type="text" id="username" placeholder="Введите логин" required>
+            <input type="password" id="password" placeholder="Введите пароль" required>
+            <button id="login-button">Войти</button>
+            <p id="error-message" style="color: red; display: none;">Неверный логин или пароль</p>
         </section>
     </main> 
-    <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
+    <script>
+        document.getElementById('login-button').addEventListener('click', function () {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Проверка заглушки
+            if (username === "Иван_Петров" && password === "ivan1234") {
+                localStorage.setItem('username', 'Иван Петров'); // Сохраняем имя пользователя
+                window.location.href = 'main.html'; // Переход на главную страницу
+            } else {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+    <script src="snowflakes.js"></script>
 </body>
 </html>
 

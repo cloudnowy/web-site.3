@@ -133,44 +133,58 @@
     </style>
 </head>
 <body>
-    
     <video autoplay loop muted>
-        <source src="Chainsaw Man - 10.mp4" type= "video/mp4">
-        </video> 
+        <source src="Chainsaw Man - 10.mp4" type="video/mp4">
+    </video>
     <header>
         <h1>Профиль</h1>
     </header>
     <main>
         <h2>Имя</h2>
         <section class="profile">
+            <p id="username-display"></p>
         </section>
     </main>
-    
     <main>
         <h2>Роль</h2>
         <section class="profile">
+            <p>Пользователь</p>
         </section>
     </main>
-
     <main>
         <h2>Безопасность</h2>
         <section class="profile">
             <p> Логин </p>
-            <input type="email" placeholder="Введите ваш логин" required>
+            <input type="email" value="Иван_Петров" readonly>
             <p> Пароль </p>
-            <input type="password" placeholder="Введите ваш пароль" required>
+            <input type="password" value="ivan1234" readonly>
         </section>
     </main>
-
     <main1>
         <div class="test-main">
-           <button id="spisokk" onclick="window.location.href='main.html'">Вернуться на главную страницу</button>
-       </div>
+            <button onclick="window.location.href='main.html'">Вернуться на главную страницу</button>
+        </div>
+        <div class="test-main">
+            <button id="logout-button">Выйти</button>
+        </div>
+    </main1>
+    <script>
+        // Проверка имени пользователя из LocalStorage
+        document.addEventListener('DOMContentLoaded', function () {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                window.location.href = 'index.html'; // Перенаправление на страницу входа
+            } else {
+                document.getElementById('username-display').textContent = username;
+            }
+        });
 
-       <div class="test-main">
-        <button id="spisokk" onclick="window.location.href='index.html'">Выйти</button>
-    </div>
-   </main1>
-    <script src="snowflakes.js"></script>  <!-- Подключаем скрипт для снежинок -->
+        // Кнопка "Выйти"
+        document.getElementById('logout-button').addEventListener('click', function () {
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        });
+    </script>
+    <script src="snowflakes.js"></script>
 </body>
 </html>
