@@ -105,40 +105,93 @@
         <h1>Сайт для проведения тестирования</h1>
     </header>
     <main>
-	<section class="login">
+        <section class="login">
             <h2>Вход</h2>
-            <a href = "https://your-api-endpoint.com/auth/yandex" tagret = "_blank">
-            <button id="login-yandex">Войти через Yandex ID</button>
-        </a>
-            <a href = "https://your-api-endpoint.com/auth/github" tagret = "_blank"> 
-            <button id="login-github">Войти через GitHub</button>
-        </a>
-       
-            <h2>Вход</h2>
-           <input type="text" id="username" placeholder="Введите логин" required>
+            <a href="https://your-api-endpoint.com/auth/yandex" target="_blank">
+                <button id="login-yandex">Войти через Yandex ID</button>
+            </a>
+            <a href="https://your-api-endpoint.com/auth/github" target="_blank">
+                <button id="login-github">Войти через GitHub</button>
+            </a>
+
+            <h2>Регистрация/Вход</h2>
+            <input type="text" id="username" placeholder="Введите логин" required>
             <input type="password" id="password" placeholder="Введите пароль" required>
+            <button id="register-button">Регистрация</button>
             <button id="login-button">Войти</button>
-            <p id="error-message" style="color: red; display: none;">Неверный логин или пароль</p>
+            <p id="error-message" style="color: red; display: none;">Ошибка</p>
         </section>
-    </main> 
+    </main>
+
     <script>
-я
+        // Функция для получения зарегистрированных пользователей из localStorage
+        function getUsers() {
+            const users = localStorage.getItem('users');
+            return users ? JSON.parse(users) : [];
+        }
 
+        // Функция для сохранения пользователя в localStorage
+        function saveUser(username, password) {
+            const users = getUsers();
+            users.push({ username, password });
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Обработчик для кнопки "Регистрация"
+        document.getElementById('register-button').addEventListener('click', function () {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!username || !password) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = 'Введите логин и пароль';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const users = getUsers();
+            const userExists = users.some(user => user.username === username);
+
+            if (userExists) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = 'Пользователь уже существует';
+                errorMessage.style.display = 'block';
+            } else {
+                saveUser(username, password);
+                alert('Пользователь зарегистрирован успешно!');
+                localStorage.setItem('username', username); // Сохраняем имя пользователя для сессии
+                window.location.href = 'main.html'; // Перенаправление на главную страницу
+            }
+        });
+
+        // Обработчик для кнопки "Войти"
         document.getElementById('login-button').addEventListener('click', function () {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
 
-            // Проверка заглушки
-            if (username === "Иван_Петров" && password === "ivan1234") {
-                localStorage.setItem('username', 'Иван_Петров'); // Сохраняем имя пользователя
-                window.location.href = 'main.html'; // Переход на главную страницу
+            if (!username || !password) {
+                const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = 'Введите логин и пароль';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            const users = getUsers();
+            const user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                localStorage.setItem('username', username); // Сохраняем имя пользователя для сессии
+                window.location.href = 'main.html'; // Перенаправление на главную страницу
             } else {
                 const errorMessage = document.getElementById('error-message');
+                errorMessage.textContent = 'Неверный логин или пароль';
                 errorMessage.style.display = 'block';
             }
         });
     </script>
+
     <script src="snowflakes.js"></script>
 </body>
+
 </html>
 
