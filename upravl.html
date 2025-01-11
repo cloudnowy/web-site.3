@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приложение для тестирования</title>
     <link rel="stylesheet" href="snowflakes.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@350&display=swap" rel="stylesheet">
     <style>
          body {
-            font-family: roboto, sans-serif;
+            font-family: arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -60,7 +59,6 @@
             margin: 5px 0;
             border-radius: 16px;
             cursor: pointer;
-            font-family: roboto, sans-serif;
             font-size: 20px;
             text-align: center;
             width: 100%;
@@ -87,17 +85,6 @@
             margin-left: 60px;
             margin-right: 60px;
             margin-bottom: 20px;
-        }
-
-        .section1 {
-            width: 400px;
-            background: gainsboro;
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            margin-bottom: 20px;
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -138,25 +125,25 @@
         </section>
 
         <section class="section">
-            <h2>Просмотр</h2>
+            <h2>Просмотр тестов</h2>
             <input type="text" id="view-tests-discipline-id" placeholder="Введите ID дисциплины">
             <button onclick="fetchTests()">Список тестов</button>
             <ul id="test-list"></ul>
         </section>
 
         <section class="section">
-            <h2>Просмотр</h2>
+            <h2>Просмотр дисциплин</h2>
             <button onclick="fetchDisciplines()">Список дисциплин</button>
             <ul id="discipline-list"></ul>
         </section>
     </div>
     <script>
         const API_BASE = 'https://testback-production-a036.up.railway.app';
-
+    
         function createTest() {
             const title = document.getElementById('test-title').value;
             const disciplineId = document.getElementById('discipline-id').value;
-
+    
             fetch(`${API_BASE}/tests`, {
                 method: 'POST',
                 headers: {
@@ -173,11 +160,11 @@
                 })
                 .catch(error => console.error('Ошибка:', error));
         }
-
+    
         function createDiscipline() {
             const title = document.getElementById('discipline-title').value;
             const description = document.getElementById('discipline-description').value;
-
+    
             fetch(`${API_BASE}/disciplines`, {
                 method: 'POST',
                 headers: {
@@ -190,64 +177,97 @@
                         alert('Дисциплина создана');
                     } else {
                         alert('Не удалось создать дисциплину');
+                    }   
+                })
+                .catch(error => console.error('Ошибка:', error));
+        }
+    
+        function fetchDisciplines() {
+            fetch(`${API_BASE}/disciplines`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка загрузки дисциплин');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const list = document.getElementById('discipline-list');
+                    list.innerHTML = '';
+    
+                    // Проверяем, что disciplines существует и это массив
+                    if (Array.isArray(data.disciplines)) {
+                        data.disciplines.forEach(discipline => {
+                            const li = document.createElement('li');
+                            li.textContent = `${discipline.id}: ${discipline.title} - ${discipline.description}`;
+                            list.appendChild(li);
+                        });
+                    } else {
+                        console.error('Неверная структура данных:', data);
                     }
                 })
                 .catch(error => console.error('Ошибка:', error));
         }
-
-        function fetchDisciplines() {
-            fetch(`${API_BASE}/disciplines`)
-                .then(response => response.json())
-                .then(data => {
-                    const list = document.getElementById('discipline-list');
-                    list.innerHTML = '';
-                    data.disciplines.forEach(discipline => {
-                        const li = document.createElement('li');
-                        li.textContent = `${discipline.id}: ${discipline.title} - ${discipline.description}`;
-                        list.appendChild(li);
-                    });
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-
+    
         function fetchTests() {
             const disciplineId = document.getElementById('view-tests-discipline-id').value;
-
+    
             fetch(`${API_BASE}/tests/${disciplineId}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка загрузки тестов');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const list = document.getElementById('test-list');
                     list.innerHTML = '';
-                    data.tests.forEach(test => {
-                        const li = document.createElement('li');
-                        li.textContent = `${test.id}: ${test.title}`;
-                        list.appendChild(li);
-                    });
+    
+                    // Проверяем, что tests существует и это массив
+                    if (Array.isArray(data.tests)) {
+                        data.tests.forEach(test => {
+                            const li = document.createElement('li');
+                            li.textContent = `${test.id}: ${test.title}`;
+                            list.appendChild(li);
+                        });
+                    } else {
+                        console.error('Неверная структура данных:', data);
+                    }
                 })
                 .catch(error => console.error('Ошибка:', error));
         }
-
+    
         function fetchQuestions() {
             const testId = document.getElementById('test-id-questions').value;
-
+    
             fetch(`${API_BASE}/questions/${testId}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка загрузки вопросов');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     const list = document.getElementById('question-list');
                     list.innerHTML = '';
-                    data.questions.forEach(question => {
-                        const li = document.createElement('li');
-                        li.textContent = `${question.content}`;
-                        list.appendChild(li);
-                    });
+    
+                    // Проверяем, что questions существует и это массив
+                    if (Array.isArray(data.questions)) {
+                        data.questions.forEach(question => {
+                            const li = document.createElement('li');
+                            li.textContent = `${question.content}`;
+                            list.appendChild(li);
+                        });
+                    } else {
+                        console.error('Неверная структура данных:', data);
+                    }
                 })
                 .catch(error => console.error('Ошибка:', error));
         }
-
+    
         function createQuestion() {
             const testId = document.getElementById('question-test-id').value;
             const content = document.getElementById('question-content').value;
-
+    
             fetch(`${API_BASE}/questions`, {
                 method: 'POST',
                 headers: {
@@ -264,7 +284,7 @@
                 })
                 .catch(error => console.error('Ошибка:', error));
         }
-    </script>
+    </script>    
     <script src="snowflakes.js"></script>
 </body>
 </html>
