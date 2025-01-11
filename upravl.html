@@ -132,7 +132,83 @@
             <ul id="test-list"></ul>
         </section>
     </div>
-    <script src="app.js"></script>
+    <script>
+        const API_BASE = 'https://testback-production-a036.up.railway.app';
+
+        function createTest() {
+            const title = document.getElementById('test-title').value;
+            const disciplineId = document.getElementById('discipline-id').value;
+
+            fetch(`${API_BASE}/tests`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, discipline_id: disciplineId })
+            })
+                .then(response => response.ok ? alert('Тест создан') : alert('Ошибка создания теста'))
+                .catch(console.error);
+        }
+
+        function createDiscipline() {
+            const title = document.getElementById('discipline-title').value;
+            const description = document.getElementById('discipline-description').value;
+
+            fetch(`${API_BASE}/disciplines`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description })
+            })
+                .then(response => response.ok ? alert('Дисциплина создана') : alert('Ошибка создания дисциплины'))
+                .catch(console.error);
+        }
+
+        function deleteTest() {
+            const testId = document.getElementById('delete-test-id').value;
+
+            fetch(`${API_BASE}/tests/${testId}`, { method: 'DELETE' })
+                .then(response => response.ok ? alert('Тест удалён') : alert('Ошибка удаления теста'))
+                .catch(console.error);
+        }
+
+        function deleteDiscipline() {
+            const disciplineId = document.getElementById('delete-discipline-id').value;
+
+            fetch(`${API_BASE}/disciplines/${disciplineId}`, { method: 'DELETE' })
+                .then(response => response.ok ? alert('Дисциплина удалена') : alert('Ошибка удаления дисциплины'))
+                .catch(console.error);
+        }
+
+        function fetchDisciplines() {
+            fetch(`${API_BASE}/disciplines`)
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('discipline-list');
+                    list.innerHTML = '';
+                    data.disciplines.forEach(discipline => {
+                        const li = document.createElement('li');
+                        li.textContent = `${discipline.id}: ${discipline.title} - ${discipline.description}`;
+                        list.appendChild(li);
+                    });
+                })
+                .catch(console.error);
+        }
+
+        function fetchTests() {
+            const disciplineId = document.getElementById('view-tests-discipline-id').value;
+
+            fetch(`${API_BASE}/tests/${disciplineId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('test-list');
+                    list.innerHTML = '';
+                    data.tests.forEach(test => {
+                        const li = document.createElement('li');
+                        li.textContent = `${test.id}: ${test.title}`;
+                        list.appendChild(li);
+                    });
+                })
+                .catch(console.error);
+        }
+    </script>
     <script src="snowflakes.js"></script>
 </body>
 </html>
