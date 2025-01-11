@@ -122,13 +122,15 @@
         </section>
     </main> 
     <script>
+я
+
         document.getElementById('login-button').addEventListener('click', function () {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
             // Проверка заглушки
             if (username === "Иван_Петров" && password === "ivan1234") {
-                localStorage.setItem('username', 'Иван Петров'); // Сохраняем имя пользователя
+                localStorage.setItem('username', 'Иван_Петров'); // Сохраняем имя пользователя
                 window.location.href = 'main.html'; // Переход на главную страницу
             } else {
                 const errorMessage = document.getElementById('error-message');

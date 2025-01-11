@@ -174,38 +174,40 @@
         }
 
         // Завершение теста
-        function completeTest(didEndEarly = false) {
-            const username = prompt('Введите ваше имя для сохранения результата:');
-            if (!username) {
-                alert('Имя не может быть пустым. Результат не сохранён.');
-                return;
-            }
+		function completeTest(didEndEarly = false) {
+			const username = localStorage.getItem('username'); // Получаем имя пользователя из localStorage
+			if (!username) {
+				alert('Пользователь не авторизован. Результат не сохранён.');
+				window.location.href = 'index.html'; // Перенаправить на страницу входа
+				return;
+			}
 
-            fetch(`${API_BASE}/results`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    test_id: testId,
-                    username: username,
-                    score: correctAnswers
-                })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        if (didEndEarly) {
-                            alert(`Вы завершили тест досрочно. Ваш результат: ${correctAnswers} правильных ответов.`);
-                        } else {
-                            alert(`Тест завершён! Ваш результат: ${correctAnswers} правильных ответов.`);
-                        }
-                        window.location.href = 'main.html'; // Вернуться на главную страницу
-                    } else {
-                        alert('Не удалось сохранить результат.');
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
+			fetch(`${API_BASE}/results`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					test_id: testId,
+					username: username,
+					score: correctAnswers
+				})
+			})
+				.then(response => {
+					if (response.ok) {
+						if (didEndEarly) {
+							alert(`Вы завершили тест досрочно. Ваш результат: ${correctAnswers} правильных ответов.`);
+						} else {
+							alert(`Тест завершён! Ваш результат: ${correctAnswers} правильных ответов.`);
+						}
+						window.location.href = 'main.html'; // Вернуться на главную страницу
+					} else {
+						alert('Не удалось сохранить результат.');
+					}
+				})
+				.catch(error => console.error('Ошибка:', error));
+		}
+
 
         // Обработчик для кнопки "Следующий вопрос"
         document.getElementById('next-button').onclick = () => {
