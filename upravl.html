@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Приложение для тестирования</title>
+    <title>Приложение для управления тестами и дисциплинами</title>
     <link rel="stylesheet" href="snowflakes.css">
     <style>
-         body {
-            font-family: arial, sans-serif;
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,8 +16,9 @@
             justify-content: center;
             min-height: 88vh;
             background-color: #151515;
-            color: black; 
+            color: black;
         }
+
         video {
             position: fixed;
             top: 0;
@@ -27,6 +28,7 @@
             object-fit: cover;
             z-index: -1;
         }
+
         header {
             background-color: gainsboro;
             padding: 20px;
@@ -36,34 +38,30 @@
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
-        
+
         input[type="text"], textarea {
             width: 93%;
             padding: 12px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 16px;
-            font-family: roboto, sans-serif;
+            font-family: Arial, sans-serif;
             font-size: 20px;
-            resize: none;
         }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
+
         button {
             background-color: #454545;
             color: white;
             border: none;
-            padding: 14px ;
+            padding: 14px;
             margin: 5px 0;
             border-radius: 16px;
             cursor: pointer;
             font-size: 20px;
-            text-align: center;
             width: 100%;
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
         }
+
         button:hover {
             background-color: #808080;
         }
@@ -75,6 +73,7 @@
             justify-content: center;
             margin-top: 30px;
         }
+
         .section {
             width: 480px;
             background: gainsboro;
@@ -82,8 +81,6 @@
             padding: 20px;
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-left: 60px;
-            margin-right: 60px;
             margin-bottom: 20px;
         }
     </style>
@@ -93,198 +90,49 @@
         <source src="Chainsaw Man - 10.mp4" type="video/mp4">
     </video>
     <header>
-        <h1>Страница для управления тестами/дисциплинами</h1>
+        <h1>Управление тестами и дисциплинами</h1>
     </header>
     <div class="container">
         <section class="section">
-            <h2>Создание</h2>
-            <input type="text" id="test-title" placeholder="Введите название теста">
-            <input type="text" id="discipline-id" placeholder="Введите ID дисциплины">
-            <button onclick="createTest()">Создать тест</button>
+            <h2>Создать тест</h2>
+            <input type="text" id="test-title" placeholder="Название теста">
+            <input type="text" id="discipline-id" placeholder="ID дисциплины">
+            <button onclick="createTest()">Создать</button>
         </section>
 
         <section class="section">
-            <h2>Создание</h2>
-            <input type="text" id="discipline-title" placeholder="Введите название дисциплины">
-            <textarea id="discipline-description" placeholder="Введите описание дисциплины"></textarea>
-            <button onclick="createDiscipline()">Создать дисциплину</button>
+            <h2>Создать дисциплину</h2>
+            <input type="text" id="discipline-title" placeholder="Название дисциплины">
+            <textarea id="discipline-description" placeholder="Описание дисциплины"></textarea>
+            <button onclick="createDiscipline()">Создать</button>
         </section>
 
         <section class="section">
-            <h2>Добавление вопроса</h2>
-            <input type="text" id="question-test-id" placeholder="Введите ID теста">
-            <textarea id="question-content" placeholder="Введите текст вопроса"></textarea>
-            <button onclick="createQuestion()">Добавить вопрос</button>
+            <h2>Удалить тест</h2>
+            <input type="text" id="delete-test-id" placeholder="ID теста">
+            <button onclick="deleteTest()">Удалить</button>
         </section>
 
         <section class="section">
-            <h2>Просмотр вопросов</h2>
-            <input type="text" id="test-id-questions" placeholder="Введите ID теста">
-            <button onclick="fetchQuestions()">Список вопросов</button>
-            <ul id="question-list"></ul>
+            <h2>Удалить дисциплину</h2>
+            <input type="text" id="delete-discipline-id" placeholder="ID дисциплины">
+            <button onclick="deleteDiscipline()">Удалить</button>
         </section>
 
         <section class="section">
-            <h2>Просмотр тестов</h2>
-            <input type="text" id="view-tests-discipline-id" placeholder="Введите ID дисциплины">
-            <button onclick="fetchTests()">Список тестов</button>
-            <ul id="test-list"></ul>
-        </section>
-
-        <section class="section">
-            <h2>Просмотр дисциплин</h2>
-            <button onclick="fetchDisciplines()">Список дисциплин</button>
+            <h2>Список дисциплин</h2>
+            <button onclick="fetchDisciplines()">Показать</button>
             <ul id="discipline-list"></ul>
         </section>
+
+        <section class="section">
+            <h2>Список тестов</h2>
+            <input type="text" id="view-tests-discipline-id" placeholder="ID дисциплины">
+            <button onclick="fetchTests()">Показать</button>
+            <ul id="test-list"></ul>
+        </section>
     </div>
-    <script>
-        const API_BASE = 'https://testback-production-a036.up.railway.app';
-    
-        function createTest() {
-            const title = document.getElementById('test-title').value;
-            const disciplineId = document.getElementById('discipline-id').value;
-    
-            fetch(`${API_BASE}/tests`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title, discipline_id: disciplineId })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Тест создан');
-                    } else {
-                        alert('Не удалось создать тест');
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-    
-        function createDiscipline() {
-            const title = document.getElementById('discipline-title').value;
-            const description = document.getElementById('discipline-description').value;
-    
-            fetch(`${API_BASE}/disciplines`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ title, description })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Дисциплина создана');
-                    } else {
-                        alert('Не удалось создать дисциплину');
-                    }   
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-    
-        function fetchDisciplines() {
-            fetch(`${API_BASE}/disciplines`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка загрузки дисциплин');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const list = document.getElementById('discipline-list');
-                    list.innerHTML = '';
-    
-                    // Проверяем, что disciplines существует и это массив
-                    if (Array.isArray(data.disciplines)) {
-                        data.disciplines.forEach(discipline => {
-                            const li = document.createElement('li');
-                            li.textContent = `${discipline.id}: ${discipline.title} - ${discipline.description}`;
-                            list.appendChild(li);
-                        });
-                    } else {
-                        console.error('Неверная структура данных:', data);
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-    
-        function fetchTests() {
-            const disciplineId = document.getElementById('view-tests-discipline-id').value;
-    
-            fetch(`${API_BASE}/tests/${disciplineId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка загрузки тестов');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const list = document.getElementById('test-list');
-                    list.innerHTML = '';
-    
-                    // Проверяем, что tests существует и это массив
-                    if (Array.isArray(data.tests)) {
-                        data.tests.forEach(test => {
-                            const li = document.createElement('li');
-                            li.textContent = `${test.id}: ${test.title}`;
-                            list.appendChild(li);
-                        });
-                    } else {
-                        console.error('Неверная структура данных:', data);
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-    
-        function fetchQuestions() {
-            const testId = document.getElementById('test-id-questions').value;
-    
-            fetch(`${API_BASE}/questions/${testId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка загрузки вопросов');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const list = document.getElementById('question-list');
-                    list.innerHTML = '';
-    
-                    // Проверяем, что questions существует и это массив
-                    if (Array.isArray(data.questions)) {
-                        data.questions.forEach(question => {
-                            const li = document.createElement('li');
-                            li.textContent = `${question.content}`;
-                            list.appendChild(li);
-                        });
-                    } else {
-                        console.error('Неверная структура данных:', data);
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-    
-        function createQuestion() {
-            const testId = document.getElementById('question-test-id').value;
-            const content = document.getElementById('question-content').value;
-    
-            fetch(`${API_BASE}/questions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ test_id: testId, content })
-            })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Вопрос добавлен');
-                    } else {
-                        alert('Не удалось добавить вопрос');
-                    }
-                })
-                .catch(error => console.error('Ошибка:', error));
-        }
-    </script>    
+    <script src="app.js"></script>
     <script src="snowflakes.js"></script>
 </body>
 </html>
